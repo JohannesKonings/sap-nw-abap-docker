@@ -26,14 +26,23 @@ docker build -t nwabap .
 3. Start container
 
 ```sh
-docker run -P -h vhcalnplci --name nwabap752 -it nwabap:latest /bin/bash
+docker run -P -p 3200:3200 -p 3300:3300 -p 8000:8000 -p 44300:44300 -h vhcalnplci --privileged --name nwabap752 -it nwabap:latest /bin/bash
+```
+4. Install NetWeaver
+
+```sh
+sysctl vm.max_map_count
+sysctl -w vm.max_map_count=1000000
+./install.sh
 ```
 
-4. Start NetWeaver
+5. Start NetWeaver
 
 The above command will start the container and open a command prompt. While SAP NetWeaver ABAP is installed, it is not started automatically by the image. You need to start the server manually.
 
 ```sh
+/usr/sbin/uuidd
+su npladm
 startsap
 ```
 
@@ -56,3 +65,16 @@ Look for an entry like SAPGLOBALHOST = d0bbd590312c
 In this case, the hostname sapstart is expecting is d0bbd590312c. Set the hostname of the container d0bbd590312c in /etc/hostname and it to /etc/hosts. Calling sapstart again should work, as the hostname is now correctly configured.
 
 5. Done. NetWeaver ABAP is installed and ready to be used. Users, credentials, etc can be found in the fie readme.html shipped with the NetWeaver ABAP RAR files.
+
+6. Start Container again
+```sh
+docker start -i nwabap752
+/usr/sbin/uuidd
+su npladm
+startsap
+```
+
+# Based also on 
+
+https://github.com/nzamani/sap-nw-abap-trial-docker
+

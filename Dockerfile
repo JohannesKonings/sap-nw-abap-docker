@@ -45,10 +45,10 @@ EXPOSE 3200
 
 # We cannot run the automated installation, as Docker gives no more space left on device error message
 # Note: running the script run.sh after the image is created will work
-RUN ./run.sh
+#RUN ./run.sh
 
 # The installation files just make the final image bigger.
-RUN rm -rf /var/tmp/NW752
+#RUN rm -rf /var/tmp/NW752
 
 # Command sequence to use this Dockerfile
 
